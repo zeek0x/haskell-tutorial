@@ -33,3 +33,9 @@ ghci> doubleSmallNumber' 100
 201
 -}
 doubleSmallNumber' x = (if x > 100 then x else x*2) + 1
+
+{-
+ghci> conanO'Brien
+"It's a-me, Conan O'Brien"
+-}
+conanO'Brien = "It's a-me, Conan O'Brien"
