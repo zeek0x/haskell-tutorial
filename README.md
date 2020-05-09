@@ -1,7 +1,8 @@
 # haskell-tutorial
 
-## 環境
-- VSCode
-- Docker
+すごいHaskellたのしく学ぼう！ の写経
 
-https://github.com/hmemcpy/haskell-hie-devcontainer
+## 環境
+
+- VSCode
+- https://github.com/hmemcpy/haskell-hie-devcontainer
