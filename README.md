@@ -42,3 +42,23 @@ GHC 7.10 から Foldable の畳み込み関数が Prelude の畳み込み関数�
 （厳密にはちょっと違うみたい）
 
 参考：https://wiki.haskell.org/Foldable_Traversable_In_Prelude
+
+
+## 第14章 モノイドがたすけにきたよ
+
+すごいHaskellたのしく学ぼう！記載
+
+```haskell
+ghci> B.pack [99,104,105] `mappend` B.pack [104,117,97,104,117,97]
+Chunk "Chi" (Chunk "huahua" Empty)
+```
+
+ghc version 8.6.5
+
+```haskell
+ghci> B.pack [99,104,105] `mappend` B.pack [104,117,97,104,117,97]
+"chihuahua"
+```
+
+原因はわからなかったが、Bianryの扱いが変わったのだろうか
+
