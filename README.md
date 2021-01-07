@@ -19,7 +19,6 @@ $ cabal install --lib random
 
 ## 12章 foldr
 
-
 すごいHaskellたのしく学ぼう！記載
 
 ```haskell
@@ -85,3 +84,51 @@ instance Semigroup (DiffList a) where
 ```
 
 参考：https://stackoverflow.com/questions/53622428/a-basic-monoid-definition-gives-no-instance-for-semigroup-mymonoid-arising-fr
+
+
+## 第14章 差分リストを使う
+
+すごいHaskellたのしく学ぼう！記載
+
+```haskell
+gcd' a b
+    | b == 0 = do
+        tell (toDiffList ["Finished with " ++ show a])
+        return a
+    | otherwise = do
+        result <- gcdReverse' b (a `mod` b)
+        tell (toDiffList [show a ++ " mod " ++ show b ++
+                          " = " ++ show (a `mod` b)])
+        return result
+
+{-
+ghci> mapM_ putStrLn . fromDiffList . snd . runWriter $ gcdReverse 100 34
+Finished with 2
+32 mod 2 = 0
+34 mod 32 = 2
+100 mod 34 = 32
+-}
+```
+
+以下の記載にすると動作する
+
+```haskell
+gcdReverse' :: Int -> Int -> Writer (DiffList String) Int
+gcdReverse' a b
+    | b == 0 = do
+        tell (toDiffList ["Finished with " ++ show a])
+        return a
+    | otherwise = do
+        result <- gcdReverse' b (a `mod` b)
+        tell (toDiffList [show a ++ " mod " ++ show b ++
+                          " = " ++ show (a `mod` b)])
+        return result
+
+{-
+ghci> mapM_ putStrLn . fromDiffList . snd . runWriter $ gcdReverse' 100 34
+Finished with 2
+32 mod 2 = 0
+34 mod 32 = 2
+100 mod 34 = 32
+-}
+```
