@@ -62,3 +62,26 @@ ghci> B.pack [99,104,105] `mappend` B.pack [104,117,97,104,117,97]
 
 原因はわからなかったが、Bianryの扱いが変わったのだろうか
 
+
+## 第14章 差分リストを使う
+
+記載通りだと以下のエラーが発生する
+
+```haskell
+01.hs:164:10: error:
+    • No instance for (Semigroup (DiffList a))
+        arising from the superclasses of an instance declaration
+    • In the instance declaration for ‘Monoid (DiffList a)’
+    |
+164 | instance Monoid (DiffList a) where
+    |
+```
+
+以下を追加することにより動作する
+
+```haskell
+instance Semigroup (DiffList a) where
+  (DiffList f) <> (DiffList g) = DiffList (\xs -> f (g xs))
+```
+
+参考：https://stackoverflow.com/questions/53622428/a-basic-monoid-definition-gives-no-instance-for-semigroup-mymonoid-arising-fr
