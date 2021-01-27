@@ -132,3 +132,27 @@ Finished with 2
 100 mod 34 = 32
 -}
 ```
+
+## 第14章　もうちょっとだけモナド
+
+Control.Monad.State のデータコンストラクタ名が State → state に変更されている
+
+すごいHaskellたのしく学ぼう！記載
+
+```haskell
+pop :: State Stack Int
+pop = State $ \(x:xs) -> (x, xs)
+
+push :: Int -> State Stack ()
+push a = State $ \xs -> ((), a:xs)
+```
+
+以下の記載にすると動作する
+
+```haskell
+pop :: State Stack Int
+pop = state $ \(x:xs) -> (x, xs)
+
+push :: Int -> State Stack ()
+push a = state $ \xs -> ((), a:xs)
+```
