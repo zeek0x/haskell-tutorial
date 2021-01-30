@@ -132,3 +132,46 @@ Finished with 2
 100 mod 34 = 32
 -}
 ```
+
+## 第14章 もうちょっとだけモナド
+
+すごいHaskellたのしく学ぼう！記載
+
+```haskell
+pop :: State Stack Int
+pop = do
+    (x:xs) <- get
+    put xs
+    return x
+```
+
+以下のコンパイルエラーが発生する
+
+```console
+03.hs:100:5: error:
+    • No instance for (MonadFail Data.Functor.Identity.Identity)
+        arising from a do statement
+        with the failable pattern ‘(x : xs)’
+    • In a stmt of a 'do' block: (x : xs) <- get
+      In the expression:
+        do (x : xs) <- get
+           put xs
+           return x
+      In an equation for ‘pop’:
+          pop
+            = do (x : xs) <- get
+                 put xs
+                 return x
+    |
+100 |     (x:xs) <- get
+    |
+```
+
+恐らくこの辺りのコンパイラーの仕様が原因：https://gitlab.haskell.org/ghc/ghc/-/wikis/migration/8.6#monadfaildesugaring-by-default
+
+本来の趣旨とは異なるが動作させるために do 記法をやめて `>>=` (bind) で書き直す
+
+```haskell
+pop :: State Stack Int
+pop = get >>= \(x:xs) -> put xs >>= \_ -> return x
+```
