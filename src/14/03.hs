@@ -1,5 +1,5 @@
 import Control.Monad.State
-import Control.Monad.Fail as Fail
+import System.Random
 
 {-
 threeCoins :: StdGen -> (Bool, Bool, Bool)
@@ -125,7 +125,23 @@ pop :: State Stack Int
 pop = get >>= \(x:xs) -> put xs >>= \_ -> return x
 
 push :: Int -> State Stack ()
-push x = do
-    xs <- get
-    put (x:xs)
+push x = get >>= \xs -> put (x:xs)
 
+-- push x = do
+--     xs <- get
+--     put (x:xs)
+
+randomSt :: (RandomGen g, Random a) => State g a
+randomSt = state random
+
+threeCoins :: State StdGen (Bool, Bool, Bool)
+threeCoins = do
+    a <- randomSt
+    b <- randomSt
+    c <- randomSt
+    return (a, b, c)
+
+{-
+ghci> runState threeCoins (mkStdGen 33)
+((True,False,True),StdGen {unStdGen = SMGen 17473681083660280586 3174492301114349737})
+-}
