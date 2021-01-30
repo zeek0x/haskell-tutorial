@@ -131,7 +131,7 @@ Finished with 2
 -}
 ```
 
-## 第14章 もうちょっとだけモナド
+## 第14章 計算の状態の正体
 
 すごいHaskellたのしく学ぼう！記載
 
@@ -172,4 +172,30 @@ pop = do
 ```haskell
 pop :: State Stack Int
 pop = get >>= \(x:xs) -> put xs >>= \_ -> return x
+```
+
+##  第14章 便利なモナディック関数特集
+
+`Writer` 値コンストラクタは `writer` に書き直す
+
+## 第14章 モナドを作る
+
+すごいH本記載通りだと以下のエラーが生じる
+
+```haskell
+08.hs:32:10: error:
+    • No instance for (Applicative Prob)
+        arising from the superclasses of an instance declaration
+    • In the instance declaration for ‘Monad Prob’
+   |
+32 | instance Monad Prob where
+   |
+```
+
+以下のコードを追加すると動作する
+
+```haskell
+instance Applicative Prob where
+    pure x = Prob [(x,1%1)]
+    (<*>) = ap
 ```
